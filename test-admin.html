@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تست پنل مدیریت</title>
+    <style>
+      body {
+        font-family: "Vazirmatn", sans-serif;
+        background: #f8f9fa;
+        padding: 20px;
+        direction: rtl;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      .btn {
+        padding: 12px 24px;
+        margin: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      .btn-primary {
+        background: #667eea;
+        color: white;
+      }
+      .btn-success {
+        background: #28a745;
+        color: white;
+      }
+      .btn-danger {
+        background: #dc3545;
+        color: white;
+      }
+      .status {
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+      .status.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      .status.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      .status.info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+      .form-group {
+        margin: 15px 0;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #e1e5e9;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔧 تست پنل مدیریت</h1>
+
+      <div id="status" class="status info">در حال بررسی وضعیت...</div>
+
+      <div id="loginSection" style="display: none">
+        <h2>ورود به سیستم</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label>نام کاربری:</label>
+            <input type="text" id="username" value="admin" required />
+          </div>
+          <div class="form-group">
+            <label>رمز عبور:</label>
+            <input type="password" id="password" value="admin123" required />
+          </div>
+          <button type="submit" class="btn btn-primary">ورود</button>
+        </form>
+      </div>
+
+      <div id="adminSection" style="display: none">
+        <h2>پنل مدیریت</h2>
+        <div id="userInfo"></div>
+        <button onclick="goToAdminPanel()" class="btn btn-success">
+          باز کردن پنل مدیریت
+        </button>
+        <button onclick="logout()" class="btn btn-danger">خروج</button>
+      </div>
+
+      <div id="testSection">
+        <h2>تست API</h2>
+        <button onclick="testProducts()" class="btn btn-primary">
+          تست محصولات
+        </button>
+        <button onclick="testUsers()" class="btn btn-primary">
+          تست کاربران
+        </button>
+        <div id="testResults"></div>
+      </div>
+    </div>
+
+    <script>
+      const API_BASE_URL = "http://localhost:3000/api";
+
+      // Check current status
+      async function checkStatus() {
+        const statusDiv = document.getElementById("status");
+        const loginSection = document.getElementById("loginSection");
+        const adminSection = document.getElementById("adminSection");
+
+        const token = localStorage.getItem("token");
+        const currentUser = localStorage.getItem("currentUser");
+
+        if (token && currentUser) {
+          try {
+            const response = await fetch(`${API_BASE_URL}/user`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            if (response.ok) {
+              const user = await response.json();
+              if (user.role === "admin") {
+                statusDiv.className = "status success";
+                statusDiv.innerHTML = `✅ وارد شده به عنوان مدیر: ${user.firstName} ${user.lastName}`;
+                loginSection.style.display = "none";
+                adminSection.style.display = "block";
+                document.getElementById("userInfo").innerHTML = `
+                                <p><strong>نام:</strong> ${user.firstName} ${
+                  user.lastName
+                }</p>
+                                <p><strong>ایمیل:</strong> ${user.email}</p>
+                                <p><strong>نقش:</strong> ${
+                                  user.role === "admin" ? "مدیر" : "کاربر"
+                                }</p>
+                            `;
+              } else {
+                statusDiv.className = "status error";
+                statusDiv.innerHTML = "❌ وارد شده اما مدیر نیستید";
+                loginSection.style.display = "block";
+                adminSection.style.display = "none";
+              }
+            } else {
+              throw new Error("Token invalid");
+            }
+          } catch (error) {
+            statusDiv.className = "status error";
+            statusDiv.innerHTML = "❌ توکن نامعتبر است";
+            loginSection.style.display = "block";
+            adminSection.style.display = "none";
+          }
+        } else {
+          statusDiv.className = "status info";
+          statusDiv.innerHTML = "ℹ️ وارد نشده‌اید";
+          loginSection.style.display = "block";
+          adminSection.style.display = "none";
+        }
+      }
+
+      // Login form
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const username = document.getElementById("username").value;
+          const password = document.getElementById("password").value;
+
+          try {
+            const response = await fetch(`${API_BASE_URL}/login`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              localStorage.setItem("token", data.token);
+              localStorage.setItem("currentUser", JSON.stringify(data.user));
+              checkStatus();
+            } else {
+              alert("خطا در ورود: " + data.message);
+            }
+          } catch (error) {
+            alert("خطا در اتصال به سرور");
+          }
+        });
+
+      // Test products API
+      async function testProducts() {
+        const resultsDiv = document.getElementById("testResults");
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          resultsDiv.innerHTML = `
+                    <div class="status error">
+                        ❌ ابتدا وارد شوید
+                    </div>
+                `;
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/products`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const products = await response.json();
+            resultsDiv.innerHTML = `
+                        <div class="status success">
+                            ✅ محصولات دریافت شد: ${products.length} محصول
+                            <br><small>${products
+                              .map((p) => p.name)
+                              .join(", ")}</small>
+                        </div>
+                    `;
+          } else {
+            const error = await response.json();
+            resultsDiv.innerHTML = `
+                        <div class="status error">
+                            ❌ خطا در دریافت محصولات: ${error.message}
+                        </div>
+                    `;
+          }
+        } catch (error) {
+          resultsDiv.innerHTML = `
+                    <div class="status error">
+                        ❌ خطا در دریافت محصولات: ${error.message}
+                    </div>
+                `;
+        }
+      }
+
+      // Test users API
+      async function testUsers() {
+        const resultsDiv = document.getElementById("testResults");
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          resultsDiv.innerHTML = `
+                    <div class="status error">
+                        ❌ ابتدا وارد شوید
+                    </div>
+                `;
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/users`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const users = await response.json();
+            resultsDiv.innerHTML = `
+                        <div class="status success">
+                            ✅ کاربران دریافت شد: ${users.length} کاربر
+                            <br><small>${users
+                              .map((u) => u.firstName + " " + u.lastName)
+                              .join(", ")}</small>
+                        </div>
+                    `;
+          } else {
+            const error = await response.json();
+            resultsDiv.innerHTML = `
+                        <div class="status error">
+                            ❌ خطا در دریافت کاربران: ${error.message}
+                        </div>
+                    `;
+          }
+        } catch (error) {
+          resultsDiv.innerHTML = `
+                    <div class="status error">
+                        ❌ خطا در اتصال: ${error.message}
+                    </div>
+                `;
+        }
+      }
+
+      // Go to admin panel
+      function goToAdminPanel() {
+        window.open("admin.html", "_blank");
+      }
+
+      // Logout
+      function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("currentUser");
+        checkStatus();
+      }
+
+      // Initialize
+      checkStatus();
+    </script>
+  </body>
+</html>

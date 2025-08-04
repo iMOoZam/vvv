@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>وبلاگ | تک‌شاپ</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <a href="index.html" style="color: white; text-decoration: none">
+              <i class="fas fa-microchip"></i>
+              <span>تک‌شاپ</span>
+            </a>
+          </div>
+          <div class="nav-menu">
+            <a href="index.html" class="nav-link">خانه</a>
+            <a href="index.html#products" class="nav-link">محصولات</a>
+            <a href="services.html" class="nav-link">خدمات</a>
+            <a href="blog.html" class="nav-link active">وبلاگ</a>
+            <a href="index.html#about" class="nav-link">درباره ما</a>
+            <a href="index.html#contact" class="nav-link">تماس</a>
+            <a href="login.html" class="nav-link">ورود</a>
+          </div>
+          <div class="nav-cart">
+            <button class="cart-btn" onclick="toggleCart()">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count">0</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero blog-hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>وبلاگ تک‌شاپ</h1>
+          <p>آخرین اخبار و مقالات تخصصی در زمینه سخت افزار کامپیوتر</p>
+        </div>
+        <div class="hero-image">
+          <i class="fas fa-blog"></i>
+        </div>
+      </div>
+    </section>
+
+    <section class="blog">
+      <div class="container">
+        <div class="blog-header">
+          <h2>آخرین مقالات</h2>
+          <div class="blog-filters">
+            <button class="filter-btn active" onclick="filterBlog('all')">
+              همه
+            </button>
+            <button class="filter-btn" onclick="filterBlog('hardware')">
+              سخت افزار
+            </button>
+            <button class="filter-btn" onclick="filterBlog('software')">
+              نرم افزار
+            </button>
+            <button class="filter-btn" onclick="filterBlog('gaming')">
+              گیمینگ
+            </button>
+            <button class="filter-btn" onclick="filterBlog('tutorial')">
+              آموزش
+            </button>
+          </div>
+        </div>
+
+        <div class="blog-grid">
+          <article class="blog-card" data-category="hardware">
+            <div class="blog-image">
+              <i class="fas fa-microchip"></i>
+            </div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">سخت افزار</span>
+                <span class="blog-date">۱۵ آذر ۱۴۰۲</span>
+              </div>
+              <h3>راهنمای انتخاب پردازنده مناسب</h3>
+              <p>
+                انتخاب پردازنده مناسب یکی از مهم‌ترین تصمیمات در ساخت کامپیوتر
+                است. در این مقاله به بررسی معیارهای مهم در انتخاب پردازنده
+                می‌پردازیم.
+              </p>
+              <div class="blog-footer">
+                <button class="read-more-btn" onclick="readMore('cpu-guide')">
+                  ادامه مطلب
+                </button>
+                <div class="blog-stats">
+                  <span><i class="fas fa-eye"></i> ۱,۲۵۰</span>
+                  <span><i class="fas fa-comment"></i> ۴۵</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="blog-card" data-category="gaming">
+            <div class="blog-image">
+              <i class="fas fa-gamepad"></i>
+            </div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">گیمینگ</span>
+                <span class="blog-date">۱۲ آذر ۱۴۰۲</span>
+              </div>
+              <h3>بهترین کارت گرافیک برای گیمینگ ۲۰۲۴</h3>
+              <p>
+                بررسی بهترین کارت‌های گرافیک موجود در بازار برای گیمرها و مقایسه
+                عملکرد آن‌ها در بازی‌های مختلف.
+              </p>
+              <div class="blog-footer">
+                <button class="read-more-btn" onclick="readMore('gpu-2024')">
+                  ادامه مطلب
+                </button>
+                <div class="blog-stats">
+                  <span><i class="fas fa-eye"></i> ۲,۱۰۰</span>
+                  <span><i class="fas fa-comment"></i> ۸۹</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="blog-card" data-category="tutorial">
+            <div class="blog-image">
+              <i class="fas fa-tools"></i>
+            </div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">آموزش</span>
+                <span class="blog-date">۱۰ آذر ۱۴۰۲</span>
+              </div>
+              <h3>آموزش مونتاژ کامپیوتر از صفر</h3>
+              <p>
+                راهنمای کامل مونتاژ کامپیوتر شخصی با تصاویر و توضیحات مرحله به
+                مرحله برای مبتدیان.
+              </p>
+              <div class="blog-footer">
+                <button class="read-more-btn" onclick="readMore('pc-build')">
+                  ادامه مطلب
+                </button>
+                <div class="blog-stats">
+                  <span><i class="fas fa-eye"></i> ۳,۴۵۰</span>
+                  <span><i class="fas fa-comment"></i> ۱۲۳</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="blog-card" data-category="software">
+            <div class="blog-image">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">نرم افزار</span>
+                <span class="blog-date">۸ آذر ۱۴۰۲</span>
+              </div>
+              <h3>بهترین آنتی‌ویروس‌های ۲۰۲۴</h3>
+              <p>
+                مقایسه و بررسی بهترین آنتی‌ویروس‌های موجود در بازار و ویژگی‌های
+                منحصر به فرد هر کدام.
+              </p>
+              <div class="blog-footer">
+                <button
+                  class="read-more-btn"
+                  onclick="readMore('antivirus-2024')"
+                >
+                  ادامه مطلب
+                </button>
+                <div class="blog-stats">
+                  <span><i class="fas fa-eye"></i> ۱,۸۷۰</span>
+                  <span><i class="fas fa-comment"></i> ۶۷</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="blog-card" data-category="hardware">
+            <div class="blog-image">
+              <i class="fas fa-memory"></i>
+            </div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">سخت افزار</span>
+                <span class="blog-date">۵ آذر ۱۴۰۲</span>
+              </div>
+              <h3>راهنمای انتخاب رم مناسب</h3>
+              <p>
+                انتخاب رم مناسب برای سیستم شما و تأثیر آن بر عملکرد کامپیوتر و
+                بازی‌ها.
+              </p>
+              <div class="blog-footer">
+                <button class="read-more-btn" onclick="readMore('ram-guide')">
+                  ادامه مطلب
+                </button>
+                <div class="blog-stats">
+                  <span><i class="fas fa-eye"></i> ۱,۵۶۰</span>
+                  <span><i class="fas fa-comment"></i> ۵۲</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="blog-card" data-category="gaming">
+            <div class="blog-image">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">گیمینگ</span>
+                <span class="blog-date">۳ آذر ۱۴۰۲</span>
+              </div>
+              <h3>بهترین تنظیمات برای بازی‌های AAA</h3>
+              <p>
+                راهنمای بهینه‌سازی تنظیمات بازی‌های AAA برای بهترین تجربه
+                گیمینگ.
+              </p>
+              <div class="blog-footer">
+                <button
+                  class="read-more-btn"
+                  onclick="readMore('gaming-settings')"
+                >
+                  ادامه مطلب
+                </button>
+                <div class="blog-stats">
+                  <span><i class="fas fa-eye"></i> ۲,۳۴۰</span>
+                  <span><i class="fas fa-comment"></i> ۷۸</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="blog-pagination">
+          <button class="pagination-btn" onclick="changePage('prev')">
+            قبلی
+          </button>
+          <span class="page-number">صفحه ۱ از ۳</span>
+          <button class="pagination-btn" onclick="changePage('next')">
+            بعدی
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="newsletter">
+      <div class="container">
+        <div class="newsletter-content">
+          <h3>عضویت در خبرنامه</h3>
+          <p>برای دریافت آخرین مقالات و اخبار، در خبرنامه ما عضو شوید</p>
+          <div class="newsletter-form">
+            <input
+              type="email"
+              placeholder="ایمیل خود را وارد کنید"
+              id="newsletter-email"
+            />
+            <button onclick="subscribeNewsletter()">عضویت</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="cart" class="cart-sidebar">
+      <div class="cart-header">
+        <h3>سبد خرید</h3>
+        <button class="close-cart" onclick="toggleCart()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="cart-items"></div>
+      <div class="cart-total">
+        <span>مجموع:</span>
+        <span class="total-amount">۰ تومان</span>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">تکمیل خرید</button>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>تک‌شاپ</h3>
+            <p>بهترین فروشگاه سخت افزار کامپیوتر</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h4>لینک‌های مفید</h4>
+            <ul>
+              <li><a href="index.html">خانه</a></li>
+              <li><a href="index.html#products">محصولات</a></li>
+              <li><a href="index.html#about">درباره ما</a></li>
+              <li><a href="index.html#contact">تماس</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>خدمات</h4>
+            <ul>
+              <li>فروش سخت افزار</li>
+              <li>تعمیرات</li>
+              <li>مشاوره</li>
+              <li>ارسال رایگان</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; ۱۴۰۴ تک‌شاپ. تمامی حقوق محفوظ است.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="blog.js"></script>
+    <script src="page-transitions.js"></script>
+
+    <div class="page-transition" id="pageTransition">
+      <div class="page-transition-content">
+        <div class="loading-spinner"></div>
+        <h3>در حال بارگذاری...</h3>
+        <p>لطفاً صبر کنید</p>
+      </div>
+    </div>
+  </body>
+</html>

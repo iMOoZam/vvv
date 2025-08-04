@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debug Authentication</title>
+    <style>
+      body {
+        font-family: "Tahoma", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+      .debug-section {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background: #f9f9f9;
+      }
+      .status {
+        padding: 10px;
+        border-radius: 5px;
+        margin: 10px 0;
+      }
+      .success {
+        background: #d4edda;
+        color: #155724;
+      }
+      .error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .info {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
+      .btn {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      .btn:hover {
+        background: #0056b3;
+      }
+      .btn-danger {
+        background: #dc3545;
+      }
+      .btn-danger:hover {
+        background: #c82333;
+      }
+      pre {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔍 Debug Authentication</h1>
+
+      <div class="debug-section">
+        <h3>📋 Current Status</h3>
+        <div id="currentStatus"></div>
+      </div>
+
+      <div class="debug-section">
+        <h3>🔑 Token Information</h3>
+        <div id="tokenInfo"></div>
+      </div>
+
+      <div class="debug-section">
+        <h3>👤 User Information</h3>
+        <div id="userInfo"></div>
+      </div>
+
+      <div class="debug-section">
+        <h3>🧪 Test API Calls</h3>
+        <button class="btn" onclick="testUserAPI()">Test /api/user</button>
+        <button class="btn" onclick="testLogin()">Test Login</button>
+        <button class="btn btn-danger" onclick="clearStorage()">
+          Clear Storage
+        </button>
+        <div id="apiResults"></div>
+      </div>
+
+      <div class="debug-section">
+        <h3>🔧 Actions</h3>
+        <button class="btn" onclick="refreshToken()">Refresh Token</button>
+        <button class="btn" onclick="goToLogin()">Go to Login</button>
+        <button class="btn" onclick="goToHome()">Go to Home</button>
+      </div>
+    </div>
+
+    <script>
+      const API_BASE_URL = "http://localhost:3000/api";
+
+      function updateStatus() {
+        const token = localStorage.getItem("token");
+        const currentUser = localStorage.getItem("currentUser");
+
+        let statusHTML = "";
+
+        if (!token) {
+          statusHTML =
+            '<div class="status error">❌ No token found in localStorage</div>';
+        } else if (!currentUser) {
+          statusHTML =
+            '<div class="status error">❌ Token exists but no user data</div>';
+        } else {
+          statusHTML =
+            '<div class="status success">✅ Token and user data found</div>';
+        }
+
+        document.getElementById("currentStatus").innerHTML = statusHTML;
+
+        // Token info
+        let tokenHTML = "";
+        if (token) {
+          try {
+            const tokenParts = token.split(".");
+            if (tokenParts.length === 3) {
+              const payload = JSON.parse(atob(tokenParts[1]));
+              const expDate = new Date(payload.exp * 1000);
+              const now = new Date();
+
+              tokenHTML = `
+                            <div class="status ${
+                              expDate > now ? "success" : "error"
+                            }">
+                                ${expDate > now ? "✅" : "❌"} Token ${
+                expDate > now ? "valid" : "expired"
+              }
+                            </div>
+                            <pre>Expires: ${expDate.toLocaleString()}
+Current: ${now.toLocaleString()}
+Payload: ${JSON.stringify(payload, null, 2)}</pre>
+                        `;
+            } else {
+              tokenHTML =
+                '<div class="status error">❌ Invalid token format</div>';
+            }
+          } catch (e) {
+            tokenHTML =
+              '<div class="status error">❌ Error parsing token</div>';
+          }
+        } else {
+          tokenHTML = '<div class="status info">ℹ️ No token available</div>';
+        }
+
+        document.getElementById("tokenInfo").innerHTML = tokenHTML;
+
+        // User info
+        let userHTML = "";
+        if (currentUser) {
+          try {
+            const user = JSON.parse(currentUser);
+            userHTML = `
+                        <div class="status success">✅ User data found</div>
+                        <pre>${JSON.stringify(user, null, 2)}</pre>
+                    `;
+          } catch (e) {
+            userHTML =
+              '<div class="status error">❌ Error parsing user data</div>';
+          }
+        } else {
+          userHTML = '<div class="status info">ℹ️ No user data available</div>';
+        }
+
+        document.getElementById("userInfo").innerHTML = userHTML;
+      }
+
+      async function testUserAPI() {
+        const resultsDiv = document.getElementById("apiResults");
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          resultsDiv.innerHTML =
+            '<div class="status error">❌ No token available for testing</div>';
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/user`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const user = await response.json();
+            resultsDiv.innerHTML = `
+                        <div class="status success">✅ API call successful</div>
+                        <pre>${JSON.stringify(user, null, 2)}</pre>
+                    `;
+          } else {
+            const error = await response.json();
+            resultsDiv.innerHTML = `
+                        <div class="status error">❌ API call failed: ${
+                          response.status
+                        }</div>
+                        <pre>${JSON.stringify(error, null, 2)}</pre>
+                    `;
+          }
+        } catch (error) {
+          resultsDiv.innerHTML = `
+                    <div class="status error">❌ Network error</div>
+                    <pre>${error.message}</pre>
+                `;
+        }
+      }
+
+      async function testLogin() {
+        const resultsDiv = document.getElementById("apiResults");
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/login`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: "admin",
+              password: "admin123",
+            }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            resultsDiv.innerHTML = `
+                        <div class="status success">✅ Login test successful</div>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+          } else {
+            const error = await response.json();
+            resultsDiv.innerHTML = `
+                        <div class="status error">❌ Login test failed: ${
+                          response.status
+                        }</div>
+                        <pre>${JSON.stringify(error, null, 2)}</pre>
+                    `;
+          }
+        } catch (error) {
+          resultsDiv.innerHTML = `
+                    <div class="status error">❌ Network error</div>
+                    <pre>${error.message}</pre>
+                `;
+        }
+      }
+
+      function clearStorage() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("currentUser");
+        updateStatus();
+        document.getElementById("apiResults").innerHTML =
+          '<div class="status info">ℹ️ Storage cleared</div>';
+      }
+
+      function refreshToken() {
+        // This would typically involve logging in again
+        goToLogin();
+      }
+
+      function goToLogin() {
+        window.location.href = "login.html";
+      }
+
+      function goToHome() {
+        window.location.href = "index.html";
+      }
+
+      // Initialize
+      updateStatus();
+    </script>
+  </body>
+</html>

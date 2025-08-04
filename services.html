@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>خدمات | تک‌شاپ</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <a href="index.html" style="color: white; text-decoration: none">
+              <i class="fas fa-microchip"></i>
+              <span>تک‌شاپ</span>
+            </a>
+          </div>
+          <div class="nav-menu">
+            <a href="index.html" class="nav-link">خانه</a>
+            <a href="index.html#products" class="nav-link">محصولات</a>
+            <a href="services.html" class="nav-link active">خدمات</a>
+            <a href="blog.html" class="nav-link">وبلاگ</a>
+            <a href="index.html#about" class="nav-link">درباره ما</a>
+            <a href="index.html#contact" class="nav-link">تماس</a>
+            <a href="login.html" class="nav-link">ورود</a>
+          </div>
+          <div class="nav-cart">
+            <button class="cart-btn" onclick="toggleCart()">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count">0</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero services-hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>خدمات تخصصی ما</h1>
+          <p>ارائه بهترین خدمات در زمینه سخت افزار کامپیوتر</p>
+        </div>
+        <div class="hero-image">
+          <i class="fas fa-tools"></i>
+        </div>
+      </div>
+    </section>
+
+    <section class="services">
+      <div class="container">
+        <h2>خدمات ما</h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-cogs"></i>
+            </div>
+            <h3>مونتاژ کامپیوتر</h3>
+            <p>مونتاژ حرفه‌ای کامپیوتر با بهترین قطعات و گارانتی معتبر</p>
+            <ul>
+              <li>انتخاب قطعات مناسب</li>
+              <li>مونتاژ حرفه‌ای</li>
+              <li>تست عملکرد</li>
+              <li>گارانتی یک ساله</li>
+            </ul>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-wrench"></i>
+            </div>
+            <h3>تعمیر و نگهداری</h3>
+            <p>تعمیر تخصصی کامپیوتر و لپ تاپ با قطعات اصل</p>
+            <ul>
+              <li>تشخیص مشکل</li>
+              <li>تعمیر تخصصی</li>
+              <li>تعویض قطعات</li>
+              <li>پشتیبانی فنی</li>
+            </ul>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-network-wired"></i>
+            </div>
+            <h3>شبکه و اینترنت</h3>
+            <p>راه‌اندازی و پیکربندی شبکه‌های کامپیوتری</p>
+            <ul>
+              <li>راه‌اندازی شبکه</li>
+              <li>پیکربندی روتر</li>
+              <li>امنیت شبکه</li>
+              <li>پشتیبانی فنی</li>
+            </ul>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>امنیت سایبری</h3>
+            <p>محافظت از سیستم‌های کامپیوتری در برابر تهدیدات</p>
+            <ul>
+              <li>نصب آنتی‌ویروس</li>
+              <li>فایروال</li>
+              <li>بکاپ گیری</li>
+              <li>بازیابی اطلاعات</li>
+            </ul>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-laptop"></i>
+            </div>
+            <h3>بهینه‌سازی</h3>
+            <p>بهینه‌سازی عملکرد کامپیوتر و افزایش سرعت</p>
+            <ul>
+              <li>پاکسازی سیستم</li>
+              <li>بهینه‌سازی ویندوز</li>
+              <li>ارتقاء قطعات</li>
+              <li>تست عملکرد</li>
+            </ul>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-headset"></i>
+            </div>
+            <h3>مشاوره فنی</h3>
+            <p>مشاوره تخصصی در انتخاب و خرید قطعات کامپیوتر</p>
+            <ul>
+              <li>مشاوره خرید</li>
+              <li>مقایسه محصولات</li>
+              <li>برآورد هزینه</li>
+              <li>پشتیبانی</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing">
+      <div class="container">
+        <h2>قیمت خدمات</h2>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>پکیج پایه</h3>
+            <div class="price">۵۰۰,۰۰۰ تومان</div>
+            <ul>
+              <li>تشخیص مشکل</li>
+              <li>تعمیر ساده</li>
+              <li>پاکسازی سیستم</li>
+              <li>گارانتی ۳ ماهه</li>
+            </ul>
+            <button class="pricing-btn">انتخاب</button>
+          </div>
+
+          <div class="pricing-card featured">
+            <h3>پکیج حرفه‌ای</h3>
+            <div class="price">۱,۲۰۰,۰۰۰ تومان</div>
+            <ul>
+              <li>تعمیر تخصصی</li>
+              <li>تعویض قطعات</li>
+              <li>بهینه‌سازی کامل</li>
+              <li>گارانتی ۶ ماهه</li>
+            </ul>
+            <button class="pricing-btn">انتخاب</button>
+          </div>
+
+          <div class="pricing-card">
+            <h3>پکیج کامل</h3>
+            <div class="price">۲,۵۰۰,۰۰۰ تومان</div>
+            <ul>
+              <li>مونتاژ کامل</li>
+              <li>نصب نرم‌افزار</li>
+              <li>راه‌اندازی شبکه</li>
+              <li>گارانتی یک ساله</li>
+            </ul>
+            <button class="pricing-btn">انتخاب</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="cart" class="cart-sidebar">
+      <div class="cart-header">
+        <h3>سبد خرید</h3>
+        <button class="close-cart" onclick="toggleCart()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="cart-items"></div>
+      <div class="cart-total">
+        <span>مجموع:</span>
+        <span class="total-amount">۰ تومان</span>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">تکمیل خرید</button>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>تک‌شاپ</h3>
+            <p>بهترین فروشگاه سخت افزار کامپیوتر</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h4>لینک‌های مفید</h4>
+            <ul>
+              <li><a href="index.html">خانه</a></li>
+              <li><a href="index.html#products">محصولات</a></li>
+              <li><a href="index.html#about">درباره ما</a></li>
+              <li><a href="index.html#contact">تماس</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>خدمات</h4>
+            <ul>
+              <li>فروش سخت افزار</li>
+              <li>تعمیرات</li>
+              <li>مشاوره</li>
+              <li>ارسال رایگان</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; ۱۴۰۴ تک‌شاپ. تمامی حقوق محفوظ است.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="services.js"></script>
+    <script src="page-transitions.js"></script>
+
+    <div class="page-transition" id="pageTransition">
+      <div class="page-transition-content">
+        <div class="loading-spinner"></div>
+        <h3>در حال بارگذاری...</h3>
+        <p>لطفاً صبر کنید</p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>جزئیات محصول | Product Detail</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <a href="index.html" style="color: white; text-decoration: none">
+              <i class="fas fa-microchip"></i>
+              <span>تک‌شاپ</span>
+            </a>
+          </div>
+          <div class="nav-menu">
+            <a href="index.html" class="nav-link">خانه</a>
+            <a href="index.html#products" class="nav-link">محصولات</a>
+            <a href="index.html#about" class="nav-link">درباره ما</a>
+            <a href="index.html#contact" class="nav-link">تماس</a>
+          </div>
+          <div class="nav-cart">
+            <button class="cart-btn" onclick="toggleCart()">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count">0</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="product-detail">
+      <div class="container">
+        <div class="product-detail-content" id="productDetailContent"></div>
+      </div>
+    </section>
+
+    <section
+      class="related-products"
+      id="relatedProducts"
+      style="display: none"
+    >
+      <div class="container">
+        <h2>محصولات مشابه</h2>
+        <div class="related-products-grid"></div>
+      </div>
+    </section>
+
+    <div class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <h3>سبد خرید</h3>
+        <button class="close-cart" onclick="toggleCart()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>مجموع:</span>
+          <span id="cartTotal">0 تومان</span>
+        </div>
+        <button class="checkout-btn" onclick="checkout()">
+          نهایی کردن خرید
+        </button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>تک‌شاپ</h3>
+            <p>بهترین فروشگاه سخت افزار کامپیوتر</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h4>لینک‌های مفید</h4>
+            <ul>
+              <li><a href="index.html">خانه</a></li>
+              <li><a href="index.html#products">محصولات</a></li>
+              <li><a href="index.html#about">درباره ما</a></li>
+              <li><a href="index.html#contact">تماس</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>خدمات</h4>
+            <ul>
+              <li>فروش سخت افزار</li>
+              <li>تعمیرات</li>
+              <li>مشاوره</li>
+              <li>ارسال رایگان</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; ۱۴۰۲ تک‌شاپ. تمامی حقوق محفوظ است.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Image Zoom Modal -->
+    <div id="imageZoomModal" class="image-zoom-modal">
+      <div class="zoom-modal-content">
+        <span class="zoom-close" onclick="closeImageZoom()">&times;</span>
+        <div class="zoom-controls">
+          <button onclick="zoomIn()" class="zoom-btn">
+            <i class="fas fa-search-plus"></i>
+          </button>
+          <button onclick="zoomOut()" class="zoom-btn">
+            <i class="fas fa-search-minus"></i>
+          </button>
+          <button onclick="resetZoom()" class="zoom-btn">
+            <i class="fas fa-undo"></i>
+          </button>
+        </div>
+        <img id="zoomImage" src="" alt="" />
+        <p id="zoomCaption"></p>
+      </div>
+    </div>
+
+    <script src="script-new.js"></script>
+    <script src="product-detail-new.js"></script>
+  </body>
+</html>

@@ -13,6 +13,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(".")); // Serve static files
 
+// Health check endpoint for Railway
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK", message: "Server is running" });
+});
+
 // MongoDB connection
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -664,6 +669,23 @@ async function initializeProducts() {
   }
 }
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+// Handle graceful shutdown for Railway
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received, shutting down gracefully");
+  server.close(() => {
+    console.log("Process terminated");
+    process.exit(0);
+  });
+});
+
+process.on("SIGINT", () => {
+  console.log("SIGINT received, shutting down gracefully");
+  server.close(() => {
+    console.log("Process terminated");
+    process.exit(0);
+  });
 });

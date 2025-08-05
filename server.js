@@ -18,23 +18,12 @@ app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK", message: "Server is running" });
 });
 
-// MongoDB connection
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connected to MongoDB");
-    // Call your seed or startup logic here - don't await to avoid blocking
-    initializeAdmin().catch((err) => console.error("Admin init error:", err));
-    initializeProducts().catch((err) =>
-      console.error("Products init error:", err)
-    );
-  })
-  .catch((error) => {
-    console.error("MongoDB connection error:", error);
-  });
+// Basic test endpoint
+app.get("/", (req, res) => {
+  res.json({ message: "TechShop API is running!" });
+});
+
+// MongoDB connection will be initiated after server starts
 
 const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
@@ -674,12 +663,25 @@ async function initializeProducts() {
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log("Server is ready to accept requests");
-});
 
-// Add timeout to prevent hanging
-setTimeout(() => {
-  console.log("Server startup timeout reached - continuing anyway");
-}, 10000);
+  // Connect to MongoDB after server starts
+  mongoose
+    .connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => {
+      console.log("Connected to MongoDB");
+      // Call your seed or startup logic here - don't await to avoid blocking
+      initializeAdmin().catch((err) => console.error("Admin init error:", err));
+      initializeProducts().catch((err) =>
+        console.error("Products init error:", err)
+      );
+    })
+    .catch((error) => {
+      console.error("MongoDB connection error:", error);
+    });
+});
 
 // Handle graceful shutdown for Railway
 process.on("SIGTERM", () => {

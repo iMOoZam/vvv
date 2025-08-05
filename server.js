@@ -7,19 +7,27 @@ const { body, validationResult } = require("express-validator");
 require("dotenv").config({ path: "./config.env" });
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static(".")); // Serve static files
 
+// MongoDB connection
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .then(() => {
+    console.log("Connected to MongoDB");
+    // Call your seed or startup logic here
+    initializeAdmin();
+    initializeProducts();
+  })
+  .catch((error) => {
+    console.error("MongoDB connection error:", error);
+  });
 
 const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
@@ -656,8 +664,6 @@ async function initializeProducts() {
   }
 }
 
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  await initializeAdmin();
-  await initializeProducts();
 });

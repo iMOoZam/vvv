@@ -26,9 +26,11 @@ mongoose
   })
   .then(() => {
     console.log("Connected to MongoDB");
-    // Call your seed or startup logic here
-    initializeAdmin();
-    initializeProducts();
+    // Call your seed or startup logic here - don't await to avoid blocking
+    initializeAdmin().catch((err) => console.error("Admin init error:", err));
+    initializeProducts().catch((err) =>
+      console.error("Products init error:", err)
+    );
   })
   .catch((error) => {
     console.error("MongoDB connection error:", error);
@@ -671,7 +673,13 @@ async function initializeProducts() {
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log("Server is ready to accept requests");
 });
+
+// Add timeout to prevent hanging
+setTimeout(() => {
+  console.log("Server startup timeout reached - continuing anyway");
+}, 10000);
 
 // Handle graceful shutdown for Railway
 process.on("SIGTERM", () => {

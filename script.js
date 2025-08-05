@@ -171,8 +171,23 @@ async function loadProducts(filter = "all") {
       productsGrid.appendChild(productCard);
     });
   } catch (error) {
-    console.error("Error loading products:", error);
-    productsGrid.innerHTML = "<p>خطا در بارگذاری محصولات</p>";
+    console.error(
+      "Error loading products from API, using local products:",
+      error
+    );
+
+    // Fallback to local products array
+    const filteredProducts =
+      filter === "all"
+        ? products
+        : products.filter((product) => product.category === filter);
+
+    productsGrid.innerHTML = "";
+
+    filteredProducts.forEach((product) => {
+      const productCard = createProductCard(product);
+      productsGrid.appendChild(productCard);
+    });
   }
 }
 
@@ -506,6 +521,8 @@ function updateCart() {
 // Load cart on page load
 document.addEventListener("DOMContentLoaded", function () {
   loadCart();
+  // Load products on page load
+  loadProducts();
 });
 
 // Update the addToCart function to use the new updateCart
